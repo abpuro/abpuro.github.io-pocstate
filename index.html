@@ -1,0 +1,38 @@
+<!-- FILEPATH: index.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Azure AD Authentication</title>
+<script type="text/javascript" src="https://alcdn.msauth.net/browser/2.0.1/js/msal-browser.min.js"></script>
+</head>
+<body>
+    <button onclick="login()">Login</button>
+
+    <script>
+        const msalConfig = {
+           auth: {
+       clientId: '77f0b8d5-9c9b-4b51-bb4f-41f930fe6064',
+       authority: 'https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47',
+       redirectUri: "https://localhost:7277/home/privacy"
+   }
+        };
+
+        const msalInstance = new msal.PublicClientApplication(msalConfig);
+
+        async function login() {
+            const loginRequest = {
+                scopes: ['openid', 'profile', 'User.Read'],
+                state: window.location.href
+            };
+
+            try {
+                const response = await msalInstance.loginPopup(loginRequest);
+                console.log('Login successful:', response);
+            } catch (error) {
+                console.log('Login failed:', error);
+            }
+        }
+    </script>
+</body>
+</html>
